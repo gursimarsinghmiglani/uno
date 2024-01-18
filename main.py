@@ -173,13 +173,23 @@ class Game:
                     self.display_cards(hands, turn)
             if turn_possible:
                 while True:
-                    throw_number = int(input("Enter valid card number to play.\n"))
+                    throw_number = input("Enter valid card number to play.\n")
+                    throw_is_number = True
+                    for digit in throw_number:
+                        if not ("0" <= digit <= "9"):
+                            throw_is_number = False
+                            break
                     throw_valid = False
-                    if 1 <= throw_number <= len(hands[turn]) and self.match(
-                        stack[-1], hands[turn][throw_number - 1], curr_color
+                    if (
+                        throw_is_number
+                        and 1 <= int(throw_number) <= len(hands[turn])
+                        and self.match(
+                            stack[-1], hands[turn][int(throw_number) - 1], curr_color
+                        )
                     ):
                         throw_valid = True
                     if throw_valid:
+                        throw_number = int(throw_number)
                         card = hands[turn][throw_number - 1]
                         hands[turn].remove(card)
                         stack.append(card)
